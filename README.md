@@ -79,6 +79,7 @@ status check without credentials or private document data.
 ## Support and releases
 
 - Package: [npm — `@mastergo/dsh-canvas`](https://www.npmjs.com/package/@mastergo/dsh-canvas)
+- Community launch: [DeepSeek Harness — Show Your Plugins!](https://github.com/deepseek-ai/deepseek-harness/discussions/4762)
 - Issues: [GitHub Issues](https://github.com/mastergo-design/dsh-canvas/issues)
 - Changes: [CHANGELOG.md](./CHANGELOG.md)
 - DeepSeek Harness: [official repository](https://github.com/deepseek-ai/deepseek-harness)

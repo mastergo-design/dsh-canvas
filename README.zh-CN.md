@@ -65,6 +65,7 @@ DeepSeek Harness 当前仍处于 Developer Preview，插件 API 可能发生不�
 去除凭证和私有文档数据后的 Canvas 状态信息。
 
 - npm：[查看 `@mastergo/dsh-canvas`](https://www.npmjs.com/package/@mastergo/dsh-canvas)
+- 社区发布：[DeepSeek Harness — Show Your Plugins!](https://github.com/deepseek-ai/deepseek-harness/discussions/4762)
 - 反馈：[GitHub Issues](https://github.com/mastergo-design/dsh-canvas/issues)
 - 更新记录：[CHANGELOG.md](./CHANGELOG.md)
 - DeepSeek Harness：[官方仓库](https://github.com/deepseek-ai/deepseek-harness)
