@@ -44,18 +44,75 @@ DSH 的插件列表只显示已经安装到本机的 Bundle；当前不是从社
 
 ### 使用方法
 
-在 Harness 会话中直接用自然语言描述操作，例如：
+日常使用只需要三步：
 
-- “检查 MasterGo Canvas 是否已经连接。”
-- “读取我在 MasterGo 中选中的节点，总结它们的结构。”
-- “截取当前选中内容的画布截图。”
-- “按照这些要求修改当前选中的节点：……”
-- “把下面这段 HTML 提交到 MasterGo 画布：……”
+1. 在同一台电脑上打开目标 MasterGo Web 文件。
+2. 如果任务针对现有内容，先在画布中选中对应节点；创建新内容时可以不选。
+3. 在 Harness 会话中直接说明目标、限制和是否允许修改。
 
-通常不需要手动输入工具名。Harness 中显示的工具名可能带有
-`mcp__mastergo_canvas__` 前缀。
+不需要记住插件名或工具名。下面这些话可以直接使用。
 
-### Canvas MCP 工具范围
+#### 确认当前文件是否可操作
+
+> 我已经在这台电脑上打开了 MasterGo 文件。先确认你能否读取当前画布；
+> 如果不能，请告诉我需要打开或刷新什么。
+
+这个请求不要求预先选中节点。它适合放在新会话的第一句话。
+
+#### 理解当前选中的设计
+
+先在 MasterGo 中选中页面、Frame 或一组节点，然后说：
+
+> 我选中了订单详情页。请读取它，按照页面层级、布局、间距、颜色、字体和
+> 组件复用情况做一份总结。先分析，不要修改画布。
+
+#### 检查视觉和规范问题
+
+> 检查我选中区域的对齐、间距、字号层级和颜色使用，列出明显问题并给出
+> 修改建议。先不要改，等我确认。
+
+如果希望检查结果带上画面依据，可以补一句：“同时截取当前选中区域供我核对。”
+
+#### 查询可以复用的组件和样式
+
+> 查看当前文件可用的组件库、颜色变量、字号和字体。我要搭建一个 B2B
+> 表单页，请告诉我应该优先复用哪些内容，并说明原因。
+
+这个场景通常不要求预先选中节点。
+
+#### 在画布中创建新页面
+
+> 在当前画布中做一个 1440 像素宽的 B2B 数据看板，包含顶部导航、四张
+> 指标卡、趋势图区域和订单表格。使用浅色背景、8 像素间距体系，并优先
+> 复用当前文件已有的组件和变量。先说明页面结构，再创建到画布中。
+
+把页面用途、尺寸、必须包含的区域、视觉要求和复用要求写清楚，结果会更稳定。
+
+#### 修改当前选中的内容
+
+先选中需要修改的节点，然后说：
+
+> 我已经选中顶部导航。保持整体尺寸和现有文案不变，增强当前菜单项的状态，
+> 统一左右间距，并让操作按钮更突出。完成后告诉我改了哪些内容。
+
+如果只想先看方案，请明确补充“先给修改方案，不要直接改画布”。
+
+#### 获取前端实现参考
+
+> 读取我选中的区域，整理一份 React 实现参考。说明主要布局、组件拆分、
+> 样式变量和响应式注意点，不需要修改画布。
+
+#### 复查刚完成的结果
+
+> 检查刚刚完成的页面是否满足前面的要求，重点看层级、间距、组件复用和
+> 视觉一致性。先列出差异；明确的小问题可以直接修复，涉及内容取舍时先问我。
+
+一个完整的实际流程可以是：打开文件并确认连接 → 选中旧页面让其先分析 →
+确认修改方向 → 执行修改 → 再做一次截图和差异检查。
+
+### 开发者参考：底层能力范围
+
+普通用户不需要使用下面的名称。它们用于排查兼容性或确认当前版本边界。
 
 | 范围 | 工具 |
 | --- | --- |
@@ -65,7 +122,7 @@ DSH 的插件列表只显示已经安装到本机的 Bundle；当前不是从社
 | 读取与检查 | `get_selection_node`、`get_frontend_code`、`get_screenshot`、`review_generated_page`、`get_design_diff` |
 | 画布编辑 | `agent_update_node`、`agent_replace_node`、`agent_remove_node`、`agent_update_variables`、`agent_remove_variable` |
 
-本 Bundle 中的 `submit_page_to_canvas` 只接受 `code` 参数中的内联 HTML，
+其中 `submit_page_to_canvas` 只接受 `code` 参数中的内联 HTML，
 不读取本地 HTML 文件路径。
 
 ### 本地运行方式
@@ -148,18 +205,88 @@ not currently an app-store flow that installs directly from a community search.
 
 ### Usage
 
-Describe the operation in normal language in a Harness conversation, for example:
+Day-to-day use takes three steps:
 
-- “Check whether MasterGo Canvas is connected.”
-- “Read the nodes I selected in MasterGo and summarize their structure.”
-- “Capture a screenshot of my current MasterGo selection.”
-- “Update the selected node using these requirements: …”
-- “Submit this inline HTML to the MasterGo canvas: …”
+1. Open the target MasterGo Web file on the same computer.
+2. If the task concerns existing content, select the relevant nodes in MasterGo.
+   Leave the selection empty when creating new content.
+3. In the Harness conversation, state the goal, constraints, and whether changes
+   may be applied immediately.
 
-Users normally do not need to type tool names. Harness may display them with an
-MCP server prefix such as `mcp__mastergo_canvas__`.
+You do not need to remember a plugin or tool name. The following prompts can be
+used directly.
 
-### Canvas MCP tool scope
+#### Confirm that the current file is reachable
+
+> I have opened the MasterGo file on this computer. First confirm whether you can
+> read the current canvas. If not, tell me what I need to open or refresh.
+
+No selection is required. This is a useful first message in a new conversation.
+
+#### Understand the selected design
+
+Select a page, frame, or group of nodes in MasterGo, then say:
+
+> I selected the order-details page. Summarize its hierarchy, layout, spacing,
+> colors, typography, and component reuse. Analyze it first and do not change the
+> canvas.
+
+#### Check visual and design-system issues
+
+> Check the selected area for alignment, spacing, type hierarchy, and color usage.
+> List clear issues and suggest fixes, but wait for my confirmation before editing.
+
+Add “capture the selected area so I can verify the findings” when a screenshot is
+useful.
+
+#### Find reusable components and styles
+
+> Inspect the libraries, color variables, type styles, and fonts available in this
+> file. I am building a B2B form page; tell me what I should reuse and why.
+
+This usually does not require a selection.
+
+#### Create a new page on the canvas
+
+> Create a 1440-pixel-wide B2B analytics dashboard on the current canvas. Include
+> a top navigation bar, four metric cards, a trend area, and an orders table. Use a
+> light background and an 8-pixel spacing system, and reuse existing components and
+> variables where possible. Explain the structure first, then create it.
+
+Results are more predictable when the request states the purpose, size, required
+sections, visual constraints, and reuse expectations.
+
+#### Modify the current selection
+
+Select the nodes to change, then say:
+
+> I selected the top navigation. Keep its overall size and copy, strengthen the
+> active-item state, make the horizontal spacing consistent, and give the action
+> button more emphasis. Tell me what changed when you finish.
+
+Add “propose the changes first; do not edit the canvas yet” when you want approval
+before execution.
+
+#### Get frontend implementation guidance
+
+> Read the selected area and prepare a React implementation reference. Explain the
+> main layout, component breakdown, style variables, and responsive considerations.
+> Do not change the canvas.
+
+#### Review the completed result
+
+> Check whether the page we just completed meets the earlier requirements. Focus
+> on hierarchy, spacing, component reuse, and visual consistency. List differences
+> first. Fix unambiguous small issues, but ask me before making content tradeoffs.
+
+A practical end-to-end flow is: open the file and confirm access → select an old
+page and ask for analysis → approve a direction → apply the change → run a final
+screenshot and difference review.
+
+### Developer reference: underlying capability scope
+
+Regular users do not need the names below. They are provided for compatibility
+debugging and for confirming the current release boundary.
 
 | Area | Tools |
 | --- | --- |
@@ -169,7 +296,7 @@ MCP server prefix such as `mcp__mastergo_canvas__`.
 | Read and review | `get_selection_node`, `get_frontend_code`, `get_screenshot`, `review_generated_page`, `get_design_diff` |
 | Canvas edits | `agent_update_node`, `agent_replace_node`, `agent_remove_node`, `agent_update_variables`, `agent_remove_variable` |
 
-In this Bundle, `submit_page_to_canvas` accepts inline HTML through its `code`
+`submit_page_to_canvas` accepts inline HTML through its `code`
 argument and does not read a local HTML file path.
 
 ### Local runtime behavior
