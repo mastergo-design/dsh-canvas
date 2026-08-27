@@ -2,6 +2,16 @@
 
 All notable public releases of `@mastergo/dsh-canvas` are recorded here.
 
+## 0.1.3 — 2026-08-27
+
+- Added concrete, copy-ready prompts for reading, reviewing, creating, editing,
+  and implementing MasterGo canvas content.
+- Added the real user actions required before each prompt, including when a
+  MasterGo selection is or is not needed.
+- Reorganized technical tool names as developer reference instead of presenting
+  them as the primary user workflow.
+- Documentation-only update; Canvas runtime behavior is unchanged.
+
 ## 0.1.2 — 2026-08-27
 
 - Rewrote the package documentation around the currently supported Canvas MCP
