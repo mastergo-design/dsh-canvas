@@ -2,6 +2,14 @@
 
 All notable public releases of `@mastergo/dsh-canvas` are recorded here.
 
+## 0.1.1 — 2026-08-27
+
+- Added the public GitHub repository, homepage, issue tracker, and DSH community
+  discovery keywords to the npm package metadata.
+- Linked the package README to the public support repository and the DeepSeek
+  Harness community launch discussion.
+- No Canvas, MCP, sidecar, security-boundary, or billing behavior changed.
+
 ## 0.1.0 — 2026-08-27
 
 - First public npm release.
