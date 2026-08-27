@@ -32,7 +32,7 @@ The bundle is designed around these boundaries:
 
 - the packaged sidecar is the isolated `mgmcp-dsh` edition;
 - local MCP transport is authenticated and bound to loopback;
-- workspace file access cannot escape through path traversal or symlinks;
-- remote image retrieval cannot reach private or reserved network targets; and
-- optional model egress is disabled unless the user enables and configures the
-  corresponding provider.
+- the Canvas bridge exposes a fixed, reviewed MCP tool allowlist;
+- accepted workspace paths cannot escape through path traversal or symlinks; and
+- `submit_page_to_canvas` accepts inline HTML instead of reading a local HTML
+  file path.
