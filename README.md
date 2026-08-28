@@ -127,11 +127,14 @@ DSH 的插件列表只显示已经安装到本机的 Bundle；当前不是从社
 
 ### 本地运行方式
 
-首次使用时，插件会校验当前平台对应的 `mgmcp-dsh`，安装到带版本号的用户
-数据目录，并在没有兼容 DSH 进程时自动启动。
+首次使用时，插件会检查本地 Canvas 服务。MasterGo 客户端已经启动兼容服务时
+直接复用；没有兼容服务时，插件会校验、安装并启动当前平台对应的
+`mgmcp-dsh`。
 
-- 只会复用兼容的 `mgmcp-dsh`。
-- MasterGo 客户端启动的标准 `mgmcp` 不会被本插件复用、停止或替换。
+- 复用 MasterGo 客户端的 protocol 10+ 标准 `mgmcp`，兼容客户端与 DSH
+  同时运行的场景。
+- 插件自行管理的 `mgmcp-dsh` 仍要求 protocol 11+ 和本地访问密钥。
+- 插件不会停止、替换或升级 MasterGo 客户端启动的 `mgmcp`。
 - 多个 DSH 进程同时启动时，通过启动锁避免重复拉起 Sidecar。
 - Harness 退出后，`mgmcp-dsh` 会保留运行，供后续 DSH 进程复用。
 - Sidecar 启动失败只会停用 Canvas 工具，不影响其他 Harness 能力。
@@ -140,8 +143,8 @@ DSH 的插件列表只显示已经安装到本机的 Bundle；当前不是从社
 
 ### 状态检查与排障
 
-`mastergo_canvas_status` 只检查本地 `mgmcp-dsh` 是否就绪，以及它由当前插件
-启动还是由其他 DSH 进程复用；它不能证明某个 MasterGo 文件或节点已经连接。
+`mastergo_canvas_status` 只检查本地 Canvas 服务是否就绪，以及它由插件启动
+还是从 MasterGo 客户端复用；它不能证明某个 MasterGo 文件或节点已经连接。
 
 - **插件列表中没有显示：** 重新执行安装命令，然后重启 web profile。
 - **Canvas 状态不可用：** 升级或重新安装插件，确保二进制与当前平台匹配。
@@ -301,13 +304,15 @@ argument and does not read a local HTML file path.
 
 ### Local runtime behavior
 
-On first use, the Bundle verifies the `mgmcp-dsh` binary for the current target,
-installs it into a versioned per-user data directory, and starts it when no
-compatible DSH runtime is available.
+On first use, the Bundle checks for a compatible local Canvas service. It reuses
+one already started by MasterGo Client; otherwise it verifies, installs, and
+starts the packaged `mgmcp-dsh` for the current platform.
 
-- Only a compatible `mgmcp-dsh` process is reused.
-- A standard `mgmcp` process started by the MasterGo client is not reused,
-  stopped, or replaced by this Bundle.
+- A protocol 10+ standard `mgmcp` started by MasterGo Client is reused so the
+  client and DSH can run together.
+- A plugin-managed `mgmcp-dsh` still requires protocol 11+ and a local access key.
+- The Bundle never stops, replaces, or upgrades the `mgmcp` process owned by
+  MasterGo Client.
 - A startup lock prevents concurrent DSH processes from launching duplicate
   sidecars.
 - `mgmcp-dsh` remains running after Harness exits so later DSH processes can
@@ -319,8 +324,8 @@ Normal users do not configure a binary path, local URL, or port.
 
 ### Status and troubleshooting
 
-`mastergo_canvas_status` reports whether the local `mgmcp-dsh` runtime is ready
-and whether this plugin started it or reused another DSH process. It does not
+`mastergo_canvas_status` reports whether the local Canvas service is ready and
+whether the Bundle started it or reused MasterGo Client's service. It does not
 prove that a particular MasterGo file or node is connected.
 
 - **The Bundle is not listed:** run the install command again and restart the
