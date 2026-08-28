@@ -2,6 +2,19 @@
 
 All notable public releases of `@mastergo/dsh-canvas` are recorded here.
 
+## 0.1.5 — 2026-08-28
+
+- Added runtime discovery based on server identity, protocol compatibility, and
+  live canvas presence instead of fixed-port assumptions.
+- Added deterministic coexistence routing between MasterGo Client `mgmcp` and
+  the DSH-managed `mgmcp-dsh`.
+- Added one safe failover retry for read-only operations that receive a
+  definitive no-online-canvas response; mutation calls are never replayed.
+- Applied the same runtime selection to regular Canvas tools, status checks, and
+  image/layer imports.
+- Updated `mastergo_canvas_status` to report the selected runtime, actual endpoint,
+  version, and live canvas connection state.
+
 ## 0.1.4 — 2026-08-28
 
 - Fixed Canvas availability when MasterGo Client already owns the fixed local MCP

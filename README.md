@@ -133,6 +133,11 @@ DSH 的插件列表只显示已经安装到本机的 Bundle；当前不是从社
 
 - 复用 MasterGo 客户端的 protocol 10+ 标准 `mgmcp`，兼容客户端与 DSH
   同时运行的场景。
+- 两种实例同时存在时，每次画布操作前都会重新发现本机运行时：优先选择已经
+  连接画布的实例；都未连接时优先选择客户端实例。
+- 端口只用于发现，不用于判断实例身份；端口被占用或自动变化无需用户配置。
+- 明确返回“没有在线画布”时，只读操作会安全切换实例并重试一次；写操作只
+  刷新路由，不自动重放，避免重复修改。
 - 插件自行管理的 `mgmcp-dsh` 仍要求 protocol 11+ 和本地访问密钥。
 - 插件不会停止、替换或升级 MasterGo 客户端启动的 `mgmcp`。
 - 多个 DSH 进程同时启动时，通过启动锁避免重复拉起 Sidecar。
@@ -143,8 +148,8 @@ DSH 的插件列表只显示已经安装到本机的 Bundle；当前不是从社
 
 ### 状态检查与排障
 
-`mastergo_canvas_status` 只检查本地 Canvas 服务是否就绪，以及它由插件启动
-还是从 MasterGo 客户端复用；它不能证明某个 MasterGo 文件或节点已经连接。
+`mastergo_canvas_status` 会实时报告当前选中的运行时、实际端口、版本和画布
+连接状态，并明确区分 MasterGo 客户端实例与 DSH 管理的实例。
 
 - **插件列表中没有显示：** 重新执行安装命令，然后重启 web profile。
 - **Canvas 状态不可用：** 升级或重新安装插件，确保二进制与当前平台匹配。
@@ -310,6 +315,13 @@ starts the packaged `mgmcp-dsh` for the current platform.
 
 - A protocol 10+ standard `mgmcp` started by MasterGo Client is reused so the
   client and DSH can run together.
+- When client and DSH runtimes coexist, the Bundle rediscovers them before canvas
+  operations and follows the runtime that already owns an online canvas. If
+  neither is connected, the client runtime wins.
+- Ports are discovery inputs rather than runtime identities, so automatic port
+  changes require no user configuration.
+- A definitive no-online-canvas response safely retries read-only operations once
+  on another runtime. Mutations only refresh routing and are never replayed.
 - A plugin-managed `mgmcp-dsh` still requires protocol 11+ and a local access key.
 - The Bundle never stops, replaces, or upgrades the `mgmcp` process owned by
   MasterGo Client.
@@ -324,9 +336,9 @@ Normal users do not configure a binary path, local URL, or port.
 
 ### Status and troubleshooting
 
-`mastergo_canvas_status` reports whether the local Canvas service is ready and
-whether the Bundle started it or reused MasterGo Client's service. It does not
-prove that a particular MasterGo file or node is connected.
+`mastergo_canvas_status` reports the selected runtime, actual endpoint, version,
+and live canvas connection state, and distinguishes MasterGo Client from the
+DSH-managed runtime.
 
 - **The Bundle is not listed:** run the install command again and restart the
   web profile.
