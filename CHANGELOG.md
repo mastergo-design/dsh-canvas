@@ -2,6 +2,18 @@
 
 All notable public releases of `@mastergo/dsh-canvas` are recorded here.
 
+## 0.1.4 — 2026-08-28
+
+- Fixed Canvas availability when MasterGo Client already owns the fixed local MCP
+  port with a protocol 10 standard `mgmcp` sidecar.
+- Reuses compatible client-owned sidecars without stopping, replacing, or upgrading
+  the MasterGo Client process.
+- Continues to require protocol 11+, DSH identity, and the per-user access key when
+  the Bundle starts its packaged `mgmcp-dsh`.
+- Rejects protocol 9 and unidentified loopback services.
+- Verified concurrent MasterGo Client and DSH startup against the published npm
+  package, including all 22 exposed Canvas tools.
+
 ## 0.1.3 — 2026-08-27
 
 - Added concrete, copy-ready prompts for reading, reviewing, creating, editing,
